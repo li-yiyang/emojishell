@@ -1,0 +1,35 @@
+#+title: EmojiShell
+#+author: 凉凉
+* About
+Inspired by [[https://www.bilibili.com/video/BV1Wg4y1X74a/][杂~鱼♡！一起让GCC编译器变可爱吧！_哔哩哔哩_bilibili]],
+and referring for [[https://github.com/zwild/eshell-prompt-extras/][eshell-prompt-extra]], here comes a =eshell-prompt=
+function using random emoji.
+
+*NOTE*: this overwrites the =eshell-previous-matching-input-from-input=
+function to make sure eshell could update its prompt when the
+prompt is changed.
+
+#+name: emojishell-demo
+#+caption: Demo for emojishell
+#+attr_org: :width 500px
+[[./img/demo.png]]
+
+* Usage
+#+name: basic-usage
+#+begin_src elisp
+  (use-package emojishell
+    :load-path "PATH/TO/EMOJISHELL"
+    :config
+    (setf eshell-prompt-function emojishell-emoji-prompt))
+#+end_src
+
+Custom =emojishell-emoji-{normal|error}-face= and
+=emojishell-{remote|path|git-branch-prompt}-face= to change
+the way it looks.
+
+Custom =emojishell-{normal|error|remote}-emoji-sets= for
+different emoji sets.
+
+* What about ZSH?
+Though i do use zsh, but i'm not good with it...
+Maybe you could refer a fish implementation (at [[https://emacs-china.org/t/emoji-shell-prompt/26099/3][emacs-china]]).
