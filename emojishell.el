@@ -8,39 +8,43 @@
 ;; Package Variables:
 ;; + `emojishell-{normal|error|remote}-emoji-sets'
 ;;   Random emoji prompt sets for {normal|error|remote} usage.
-;; 
+;;
 ;; + `emojishell-path-name-shorten-trigger-length'
 ;;   `emojishell-path-name-maximum-length'
 ;;   Used to custom how the path name is reduced.
-;; 
+;;
 ;; + `emojishell-emoji-{normal|error}-face'
 ;;   `emojishell-{remote|path|git-branch-prompt}-face'
 ;;   Custom faces for emoji prompt and corresponding components.
-;; 
+;;
 ;; Package Functions:
 ;; + `emojishell-emoji-prompt'
 ;;   Eshell emoji prompt
-;; 
+;;
 ;; + `emojishell-shorten-path-name'
 ;;   `emojishell-path'
 ;;   Naive path name shorten method.
-;; 
+;;
 ;; + `eshell-previous-matching-input-from-input'
 ;;   *NOTE*: overwrite the function defined in eshell.el.
 ;;   Just to make sure eshell could update its prompt each time
 ;;   when the prompt is changed.
-;; 
+;;
 ;; misc functions
 ;; + `emojishell-luck-in'
 ;;   `emojishell-pick'
 ;;   Random pick functions.
-;; 
+;;
 ;; + `emojishell-with-face'
 ;;   Bind string with face
-;; 
+;;
 ;; + `emojishell-remote-p'
 ;; + `emojishell-git-branch'
-;; 
+;;
+
+;; Credits:
+;; + 絵文字大集合♪
+;;   http://www.measure.jp/meal/report/others/emoji.htm
 
 ;;; Code:
 
@@ -49,13 +53,15 @@
 
 ;; cusom variables
 (defcustom emojishell-normal-emoji-sets
-  '("[´･ᴗ･`]" "[´･ω･`]" "[ •_•]" "[•_• ]" "[੧ᐛ੭]" "[ง˙o˙]ว" "૧[●´৺`●]૭" "[ﾟ∀ﾟ*]")
+  '("[´･ᴗ･`]" "[´･ω･`]" "[ •_•]" "[•_• ]" "[੧ᐛ੭]" "[ง˙o˙]ว" "૧[●´৺`●]૭" "[ﾟ∀ﾟ*]"
+    "♪[●^o^●]" "[∂_∂]" "ﾍ[∩_∩]ﾉ" "[|:3P]" "[=^.^=]" "[^_-]-☆")
   "A set of char displayed for normal prompt."
   :type 'list
   :group 'emojishell)
 
 (defcustom emojishell-error-emoji-sets
-  '("ﾍ[´Д`]ﾉ" "[;◔౪◔]" "ε=ε=ヾ[;ﾟдﾟ]/" "[ﾟДﾟ≡ﾟдﾟ]" "[||ﾟДﾟ]" "[▼皿▼]")
+  '("ﾍ[´Д`]ﾉ" "[;◔౪◔]" "ε=ε=ヾ[;ﾟдﾟ]/" "[ﾟДﾟ≡ﾟдﾟ]" "[||ﾟДﾟ]" "[▼皿▼]"
+    "[;¬_¬]" "ﾍ[`⌒´]ﾉ" "[>_<;;]" "[-ι-;;]" "[ToT]" "[T^T]")
   "A set of char displayed for error prompt."
   :type 'list
   :group 'emojishell)
@@ -118,7 +124,7 @@
     (if branch branch nil)))
 
 (defun emojishell-shorten-path-name (path-name)
-  "Try to make the `path-name' shorten than 
+  "Try to make the `path-name' shorten than
   `emojishell-path-name-shorten-trigger-length'. "
   (let* ((path (split-string path-name "/"))
          (cnt  (1- (length path)))
@@ -129,7 +135,7 @@
               for i below cnt
               for name = (string-join
                           (mapcar (lambda (s) (substring s 0 1))
-                                  (string-split elem "[-_\\. ]+" t))) 
+                                  (string-split elem "[-_\\. ]+" t)))
               while (> len emojishell-path-name-shorten-trigger-length)
               do (setf len (- len (length name)))
               collect name into shortened
@@ -137,7 +143,7 @@
      "/")))
 
 (defun emojishell-path ()
-  "Return path of current working directory. 
+  "Return path of current working directory.
   If the length of path name is longer `emojishell-path-name-shorten-trigger-length',
   try to shorten the path name; and if the shortened path name is still longer than
   `emojishell-path-name-maximum-length', try to cutoff the path name directly."
@@ -169,33 +175,9 @@
   "Bind `string' with `face'."
   `(propertize ,string 'face ,face))
 
-(defun eshell-previous-matching-input-from-input (arg)
-  "Search backwards through input history for match for current input.
-  \(Previous history elements are earlier commands.)
-  With prefix argument N, search for Nth previous match.
-  If N is negative, search forwards for the -Nth following match.
-
-  This is a patch for `eshell-previous-matching-input-from-input' which fails
-  to match if you're using custom prompt that change every time."
-  (interactive "p")
-  (if (not (memq last-command '(eshell-previous-matching-input-from-input
-                                eshell-next-matching-input-from-input)))
-      ;; Starting a new search
-      (setq eshell-matching-input-from-input-string
-            (buffer-substring (save-excursion (eshell-bol) (point))
-                              (point))
-            eshell-history-index nil))
-  (eshell-previous-matching-input
-   (concat eshell-prompt-regexp
-           (regexp-quote
-            (replace-regexp-in-string
-             eshell-prompt-regexp ""
-             eshell-matching-input-from-input-string)))
-   arg))
-
 (defun emojishell-emoji-prompt ()
   "Eshell emoji prompt."
-  (setf eshell-prompt-regexp "^[^#>]* [#>] ")
+  (setf eshell-prompt-regexp "^[^#> ]* [#>] ")
   (concat
    ;; first line: remote path git
    (when (emojishell-remote-p)
