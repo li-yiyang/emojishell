@@ -54,14 +54,16 @@
 ;; cusom variables
 (defcustom emojishell-normal-emoji-sets
   '("[´･ᴗ･`]" "[´･ω･`]" "[ •_•]" "[•_• ]" "[੧ᐛ੭]" "[ง˙o˙]ว" "૧[●´৺`●]૭" "[ﾟ∀ﾟ*]"
-    "♪[●^o^●]" "[∂_∂]" "ﾍ[∩_∩]ﾉ" "[|:3P]" "[=^.^=]" "[^_-]-☆")
+    "♪[●^o^●]" "[∂_∂]" "ﾍ[∩_∩]ﾉ" "[|:3P]"
+    "[⸝⸝ᐢᵕᐢ⸝⸝]" "✧*｡[ˊᗜˋ*]" "[˙ Ⱉ ˙]" "ヾ[◍°∇°◍]ﾉ" "[●ツ●]")
   "A set of char displayed for normal prompt."
   :type 'list
   :group 'emojishell)
 
 (defcustom emojishell-error-emoji-sets
   '("ﾍ[´Д`]ﾉ" "[;◔౪◔]" "ε=ε=ヾ[;ﾟдﾟ]/" "[ﾟДﾟ≡ﾟдﾟ]" "[||ﾟДﾟ]" "[▼皿▼]"
-    "[;¬_¬]" "ﾍ[`⌒´]ﾉ" "[>_<;;]" "[-ι-;;]" "[ToT]" "[T^T]")
+    "[;¬_¬]" "ﾍ[`⌒´]ﾉ" "[>_<;;]" "[-ι-;;]" "[ToT]"
+    "[╯°口°]╯" "[´；ω；`]" "[¬_¬'']" "[･᷄-･᷅]" "[⚆д⚆]" "[´◓Д◔`]")
   "A set of char displayed for error prompt."
   :type 'list
   :group 'emojishell)
