@@ -1,4 +1,7 @@
 ;;; emojishell.el --- EmojiShell: emoji prompt for eshell -*- lexical-binding: t -*-
+
+;;; Compatibility: Emacs 24+
+
 ;;; Documentation:
 
 ;;; For simple usage:
@@ -47,6 +50,9 @@
 ;;   http://www.measure.jp/meal/report/others/emoji.htm
 
 ;;; Code:
+
+;; require tramp for `emojishell'
+(require 'tramp)
 
 ;; require vc-git for `emojishell'
 (autoload 'vc-git-branches "vc-git")
@@ -131,13 +137,14 @@
   (let* ((path (split-string path-name "/"))
          (cnt  (1- (length path)))
          (len  (length path-name)))
-    (string-join
+    (mapconcat
+     #'identity
      (cl-loop for rest = path then (cdr rest)
               for elem = (car rest)
               for i below cnt
               for name = (string-join
                           (mapcar (lambda (s) (substring s 0 1))
-                                  (string-split elem "[-_\\. ]+" t)))
+                                  (split-string elem "[-_\\. ]+" t)))
               while (> len emojishell-path-name-shorten-trigger-length)
               do (setf len (- len (length name)))
               collect name into shortened
@@ -150,9 +157,9 @@
   try to shorten the path name; and if the shortened path name is still longer than
   `emojishell-path-name-maximum-length', try to cutoff the path name directly."
   (let ((path-name (abbreviate-file-name (eshell/pwd))))
-    (if (length> path-name emojishell-path-name-shorten-trigger-length)
+    (if (> (length path-name) emojishell-path-name-shorten-trigger-length)
         (let ((shortened (emojishell-shorten-path-name path-name)))
-          (if (length> shortened emojishell-path-name-maximum-length)
+          (if (> (length shortened) emojishell-path-name-maximum-length)
               (concat "..."
                       (substring path-name
                                  (- (length shortened)
