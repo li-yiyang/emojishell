@@ -142,9 +142,10 @@
      (cl-loop for rest = path then (cdr rest)
               for elem = (car rest)
               for i below cnt
-              for name = (string-join
-                          (mapcar (lambda (s) (substring s 0 1))
-                                  (split-string elem "[-_\\. ]+" t)))
+              for name = (mapconcat
+                          (lambda (s) (substring s 0 1))
+                          (split-string elem "[-_\\. ]+" t)
+                          "")
               while (> len emojishell-path-name-shorten-trigger-length)
               do (setf len (- len (length name)))
               collect name into shortened
